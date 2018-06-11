@@ -1,0 +1,8 @@
+---                                                                                                                    
+# this job for install vsftpd#                                                                                         
+- name: Install Vsftpd
+  hosts: rtidv1mst03                                                                                                 
+  become: yes                                                                                                          
+                                                                                                                       
+  roles:                                                                                                               
+    - vsftpd_init
