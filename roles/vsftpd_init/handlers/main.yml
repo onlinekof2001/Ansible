@@ -1,0 +1,7 @@
+---                                                                                                                    
+- name: Service | Restart Vsftpd
+  service:                                                                                                             
+    name: 'vsftpd'                                                                                                   
+    state: 'restarted'                                                                                                 
+  when: do_reload is not defined or do_reload != "no"                                                                  
+  tags: restart 
