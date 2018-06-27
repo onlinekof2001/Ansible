@@ -1,0 +1,13 @@
+---                                                                                                                    
+  - name: Install Zabbix
+    hosts: rtidv1mst03
+    tags: Zabbix platform
+
+    roles:
+      - zabbix_init
+
+    vars_prompt:
+      - name: "db_var"
+        prompt: "Database type only for [Mysql|Postgres]"
+        default: "Postgres"
+        private: no

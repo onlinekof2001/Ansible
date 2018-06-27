@@ -1,7 +1,7 @@
 ---                                                                                                                    
-- name: Restartvsftpd
-  service:
-    name: vsftpd
-    state: restarted
-  tags:
-    - restart vsftpd service
+  - name: Install Nginx
+    hosts: rtidv1mst03
+    tags: Nginx Application
+
+    roles:
+      - nginx_init

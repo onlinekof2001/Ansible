@@ -1,0 +1,45 @@
+---
+- name: Install Zabbix Resource(RedHat7)  
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - '{{ epel_version7 }}'
+    - "nginx-{{ nginx_version7 }}"
+  when:
+    - "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+  tags:
+    - YUM Resource packages for RHEL7
+
+- name: Install Zabbix Resource(RedHat6)
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - '{{ epel_version6 }}'
+      # - 'nginx-{{ nginx_version6 }}'
+  when:
+    - "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
+  tags:
+    - YUM Resource packages for RHEL6
+
+- name: create logs directory
+  file:
+    path: /usr/share/nginx/logs
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: 0755
+
+- name: Install nginx main configuration
+  copy: src=nginx.conf dest=/etc/nginx/
+
+- name: correct the systemctl scripts
+  copy: src=nginx.service dest=/usr/lib/systemd/system/
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+  tags:
+    - Restart nginx deamon

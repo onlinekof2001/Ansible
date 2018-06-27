@@ -1,0 +1,38 @@
+---
+- name: Install Vsftp (Redhat6)
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - 'vsftpd-{{ vsftpd_version_6 }}'
+  when:
+    - "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
+  tags: 
+    - package
+
+- name: Install Vsftp (RedHat7)
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - 'vsftpd-{{ vsftpd_version_7 }}'
+  when: 
+    - "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+  tags:
+    - package
+
+- name: Configure /etc/vsftpd/vsftpd.conf
+  copy: src=vsftpd.conf dest=/etc/vsftpd
+
+- name: Configure /etc/vsftpd/ftpusers
+  copy: src=ftpusers dest=/etc/vsftpd
+ 
+- name: Configure /etc/vsftpd/user_list
+  copy: src=user_list dest=/etc/vsftpd
+  
+- name: Restart Vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+  tags:
+    - Restart vsftpd deamon

@@ -1,0 +1,49 @@
+---
+- name: Install Zabbix Resource(RedHat7)  
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - '{{ zbx_os7_url }}'
+  when:
+    - "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+  tags:
+    - YUM Resource packages for RHEL7
+
+- name: Install Zabbix Resource(RedHat6)
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - '{{ zbx_os6_url }}'
+  when:
+    - "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"
+  tags:
+    - YUM Resource packages for RHEL6
+
+- name: Install zabbix web support for pgsql
+  yum:
+    name: zabbix-web-pgsql
+    state: present
+  when:
+    - "{{ db_var }} = 'Postgres'"
+
+
+- name: Install zabbix server support for pgsql
+  yum:
+    name: zabbix-server-pgsql
+    state: present
+  when:
+    - "{{ db_var }} = 'Postgres'"
+
+
+- name: Install zabbix get tools    
+  yum:
+    name: zabbix-get
+    state: present
+  when:
+    - "{{ db_var }} = 'Postgres'"
+
+- name: check the postgres alive
+  command: "systemctl status postgresql96.service"
+  register: pgstat
